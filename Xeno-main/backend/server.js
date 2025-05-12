@@ -12,24 +12,26 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Root route to prevent 404 on homepage
+// ✅ Root route to avoid 404 when accessing base URL
 app.get("/", (req, res) => {
   res.send("✅ Mini CRM Backend is running.");
 });
 
-// MongoDB connection using environment variable
+// ✅ MongoDB connection using environment variable (required for Vercel)
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
+  useUnifiedTopology: true
 })
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch(err => console.error("❌ MongoDB connection error:", err));
+.then(() => console.log("✅ MongoDB connected"))
+.catch((err) => console.error("❌ MongoDB connection error:", err));
 
-// API Routes
+// API routes
 app.use('/api/customers', customerRoutes);
 app.use('/api/segments', segmentRoutes);
 app.use('/api/campaigns', campaignRoutes);
 
-// Start the server (Port 5000 locally or as assigned in deployment)
+// ✅ Start server (PORT from env or default to 5000 for local dev)
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
